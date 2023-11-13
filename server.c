@@ -71,4 +71,8 @@ int main(void)
 		return (0);
 	printf("%d", pid);
 	signal(SIGUSR1, handle_recieve);
+	while (1)
+	{
+		usleep(100);
+	}
 }
