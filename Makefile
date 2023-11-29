@@ -7,18 +7,18 @@ INCLUDE	:= -I ./lib/libft -I ./lib/ft_printf
 
 .PHONY: all clean fclean server client
 
-all: $(SERVER) $(CLIENT)
+all: $(SERVER) $(CLIENT) clean
 
 %.o: %.c
 	@make -C ./lib/libft
 	@make -C ./lib/ft_printf
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(SERVER): server.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) $^ -o $@
 
 $(CLIENT): client.o
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) $^ -o $@
 
 clean:
 	@make -C ./lib/libft clean
