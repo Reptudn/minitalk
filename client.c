@@ -6,7 +6,7 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:13:04 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 10:13:21 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:29:42 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,21 @@ void	handle_receive()
 	// basically same as in server
 }
 
-void	send_message(char *str)
+void	send_message(char *str, int pid)
 {
-	// bascially same as in server
+	if (!str || !pid)
+		return ;
+	while (*str)
+	{
+		if (kill(pid, *str) == -1)
+		{
+			ft_printf("Error sending signal\nExiting...\n");
+			exit(1);
+		}
+		ft_printf("Sent signal: %d\n", *str);
+		str++;
+		usleep(100);
+	}
 }
 
 int	main(int argc, char **argv)
@@ -37,6 +49,6 @@ int	main(int argc, char **argv)
 	if (pid <= 0)
 		return (0);
 	signal(SIGUSR2, handle_receive);
-	send_message(argv[2]);
+	send_message(argv[2], pid);
 	return (0);
 }

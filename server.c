@@ -6,11 +6,12 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:10:59 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 10:19:55 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:37:57 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
+#include <sys/_types/_pid_t.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,20 +26,20 @@
 
 char	*g_last_received = 0;
 
-void	send_message(char *str)
-{
-	int	pid;
-	int	c;
-	int	i;
+// void	send_message(char *str)
+// {
+// 	int	pid;
+// 	int	c;
+// 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		c = str[i]; // convert this to bits starting from the bit on the left;
-		kill(pid, SIGUSR2); // now find out how to send right signal like 0 or 1?
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		c = str[i];
+// 		kill(pid, SIGUSR2);
+// 		i++;
+// 	}
+// }
 
 void	handle_recieve(int signal)
 {
@@ -49,6 +50,7 @@ void	handle_recieve(int signal)
 	len = 0;
 	if (signal != SIGUSR1)
 		return ;
+	ft_printf("Received signal: %d\n", signal);
 	if (count == 8)
 	{
 		write(1, &byte, 1);
@@ -67,11 +69,6 @@ void	handle_recieve(int signal)
 	}
 	byte += 1;
 	byte = byte << 1; // ckeck if this is correct?
-}
-
-int	stop_programm(int signal)
-{
-	// maybe use terminate signal to free everything and then quit
 }
 
 int	main(void)
