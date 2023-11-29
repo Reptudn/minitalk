@@ -6,7 +6,7 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:13:04 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 12:07:53 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 12:26:27 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "./lib/ft_printf/ft_printf.h"
 #include "./lib/libft/libft.h"
-
-void	handle_receive(int signal)
-{
-	printf("Received signal: %d\n", signal);
-}
 
 void	send_message(char *str, int pid)
 {
@@ -40,10 +34,10 @@ void	send_message(char *str, int pid)
 			else
 				kill(pid, SIGUSR2);
 			i--;
-			usleep(100);
+			usleep(250);
 		}
 		str++;
-		usleep(100);
+		usleep(250);
 	}
 	write(1, "Message sent!\n", 15);
 }
@@ -54,18 +48,16 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 	{
-		printf("Invalid arguments\n");
-		printf("Usage: %s <pid> <message>\n", argv[0]);
+		write(1, "Invalid arguments\n", 18);
+		write(1, "Usage: ./client <pid> <message>\n", 33);
 		return (0);
 	}
-	pid = atoi(argv[1]);
-	if (pid <= 0 || signal(SIGUSR2, handle_receive) == SIG_ERR)
+	pid = ft_atoi(argv[1]);
+	if (pid <= 0)
 	{
-		printf("Invalid PID or failed to set signal handler\n");
+		write(1, "Invalid PID or failed to set signal handler\n", 45);
 		return (0);
 	}
-	printf("PID: %d\n", pid);
-	printf("Message: %s\n", argv[2]);
 	send_message(argv[2], pid);
 	return (0);
 }

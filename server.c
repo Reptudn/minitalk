@@ -6,7 +6,7 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:10:59 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 12:01:46 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 12:42:15 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "./lib/ft_printf/ft_printf.h"
 #include "./lib/libft/libft.h"
+#include "./lib/ft_printf/ft_printf.h"
 
 /*
 **	1 is SIGUSR1
@@ -55,7 +55,7 @@ int	main(void)
 	pid = getpid();
 	if (pid <= 0)
 		return (0);
-	printf("%d\n", pid);
+	ft_printf("%d\n", pid);
 	signal(SIGUSR1, handle_recieve);
 	signal(SIGUSR2, handle_recieve);
 	while (1)
