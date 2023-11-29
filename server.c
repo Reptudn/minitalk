@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/29 10:10:59 by jkauker           #+#    #+#             */
+/*   Updated: 2023/11/29 10:19:55 by jkauker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <./lib/libftprintf.h>
+#include "./lib/ft_printf/ft_printf.h"
+#include "./lib/libft/libft.h"
 
 
 /*
@@ -10,7 +23,7 @@
 **	Client uses SIGUSR2
 */
 
-char	*last_received = 0;
+char	*g_last_received = 0;
 
 void	send_message(char *str)
 {
@@ -18,7 +31,6 @@ void	send_message(char *str)
 	int	c;
 	int	i;
 
-	//pid ==  signal of client
 	i = 0;
 	while (str[i])
 	{
@@ -40,16 +52,16 @@ void	handle_recieve(int signal)
 	if (count == 8)
 	{
 		write(1, &byte, 1);
-		if (!last_received)
+		if (!g_last_received)
 		{
-			last_received = malloc(2 * sizeof(char));
-			last_received[0] = byte;
-			last_received[1] = 0;
+			g_last_received = malloc(2 * sizeof(char));
+			g_last_received[0] = byte;
+			g_last_received[1] = 0;
 		}
-		len = ft_strlen(last_received);
-		last_received = realloc(last_received, (len + 2) * sizeof(char));
-		last_received[len] = byte;
-		last_received[len + 1] = 0;
+		len = ft_strlen(g_last_received);
+		g_last_received = realloc(g_last_received, (len + 2) * sizeof(char));
+		g_last_received[len] = byte;
+		g_last_received[len + 1] = 0;
 		count = 0;
 		byte = 0;
 	}
@@ -62,15 +74,19 @@ int	stop_programm(int signal)
 	// maybe use terminate signal to free everything and then quit
 }
 
-int main(void)
+int	main(void)
 {
 	int	pid;
 
 	pid = getpid();
 	if (pid <= 0)
 		return (0);
-	printf("%d", pid);
-	signal(SIGUSR1, handle_recieve);
+	ft_printf("%d\n", pid);
+	if (signal(SIGUSR1, handle_recieve) == SIG_ERR)
+	{
+		ft_printf("Error: Could not register signal handler\n");
+		return (0);
+	}
 	while (1)
 	{
 		usleep(100);
