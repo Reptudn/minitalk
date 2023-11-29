@@ -6,7 +6,7 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:13:04 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 12:06:02 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 12:07:53 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	pid = atoi(argv[1]);
-
 	if (pid <= 0 || signal(SIGUSR2, handle_receive) == SIG_ERR)
 	{
 		printf("Invalid PID or failed to set signal handler\n");
