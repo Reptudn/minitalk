@@ -6,7 +6,7 @@
 /*   By: jkauker <jkauker@student.42heilbrnn.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:10:59 by jkauker           #+#    #+#             */
-/*   Updated: 2023/11/29 12:42:15 by jkauker          ###   ########.fr       */
+/*   Updated: 2023/11/29 12:45:59 by jkauker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,27 @@
 **	0 is SIGUSR2
 */
 
-char	g_last_received = 0;
-
 void	handle_recieve(int signal)
 {
 	static int	count = 0;
+	static char	last_received = 0;
 
 	if (signal == SIGUSR1)
 	{
-		g_last_received = g_last_received << 1;
-		g_last_received = g_last_received | 1;
+		last_received = last_received << 1;
+		last_received = last_received | 1;
 	}
 	else
 	{
-		g_last_received = g_last_received << 1;
-		g_last_received = g_last_received | 0;
+		last_received = last_received << 1;
+		last_received = last_received | 0;
 	}
 	count++;
 	if (count == 8)
 	{
-		write(1, &g_last_received, 1);
+		write(1, &last_received, 1);
 		count = 0;
-		g_last_received = 0;
+		last_received = 0;
 	}
 }
 

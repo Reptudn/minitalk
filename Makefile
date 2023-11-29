@@ -32,3 +32,6 @@ fclean: clean
 	rm -f $(SERVER) $(CLIENT) && printf "Cleaned everything\n"
 
 re: fclean all
+
+# $@ - target (like $(SERVER) and $(CLIENT))
+# $^ - all dependencies (like server.o and client.o)
